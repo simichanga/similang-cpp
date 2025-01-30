@@ -83,8 +83,11 @@ llvm::Value* LLVMIRGenerator::visitVariableDeclaration(LanguageParser::VariableD
     }
 
     if (type) {
-        llvm::AllocaInst* alloca = builder->CreateAlloca(type, nullptr, varName);
-        return alloca;
+        // Create an alloca for the variable if it doesn't already exist
+        if (symbolTable.find(varName) == symbolTable.end()) {
+            symbolTable[varName] = createEntryBlockAlloca(type, varName);
+        }
+        return symbolTable[varName];
     }
     return nullptr;
 }
@@ -93,9 +96,15 @@ llvm::Value* LLVMIRGenerator::visitAssignment(LanguageParser::AssignmentContext*
     std::string varName = ctx->ID()->getText();
     llvm::Value* value = visit(ctx->expression(), parser);
 
-    // Store the value in the variable
-    llvm::AllocaInst* alloca = builder->CreateAlloca(value->getType(), nullptr, varName);
-    builder->CreateStore(value, alloca);
+    // Look up the variable in the symbol table
+    if (symbolTable.find(varName) != symbolTable.end()) {
+        builder->CreateStore(value, symbolTable[varName]);
+    } else {
+        // If the variable doesn't exist, create an alloca for it
+        llvm::Type* type = value->getType();
+        symbolTable[varName] = createEntryBlockAlloca(type, varName);
+        builder->CreateStore(value, symbolTable[varName]);
+    }
     return value;
 }
 
@@ -127,10 +136,11 @@ llvm::Value* LLVMIRGenerator::visitTerm(LanguageParser::TermContext* ctx, Langua
 
 llvm::Value* LLVMIRGenerator::visitFactor(LanguageParser::FactorContext* ctx, LanguageParser& parser) {
     if (ctx->ID()) {
-        // Look up the variable
+        // Look up the variable in the symbol table
         std::string varName = ctx->ID()->getText();
-        llvm::AllocaInst* alloca = builder->CreateAlloca(llvm::Type::getInt32Ty(*context), nullptr, varName);
-        return builder->CreateLoad(alloca->getAllocatedType(), alloca, varName);
+        if (symbolTable.find(varName) != symbolTable.end()) {
+            return builder->CreateLoad(symbolTable[varName]->getAllocatedType(), symbolTable[varName], varName);
+        }
     } else if (ctx->INT()) {
         return llvm::ConstantInt::get(*context, llvm::APInt(32, std::stoi(ctx->INT()->getText())));
     } else if (ctx->FLOAT()) {
@@ -139,4 +149,10 @@ llvm::Value* LLVMIRGenerator::visitFactor(LanguageParser::FactorContext* ctx, La
         return visit(ctx->expression(), parser);
     }
     return nullptr;
+}
+
+llvm::AllocaInst* LLVMIRGenerator::createEntryBlockAlloca(llvm::Type* type, const std::string& varName) {
+    // Create an alloca instruction at the beginning of the entry block
+    llvm::IRBuilder<> tmpBuilder(&module->getFunction("main")->getEntryBlock(), module->getFunction("main")->getEntryBlock().begin());
+    return tmpBuilder.CreateAlloca(type, nullptr, varName);
 }

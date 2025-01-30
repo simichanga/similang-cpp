@@ -18,3 +18,6 @@
 2	3717	1738279407528845276	CMakeFiles/SimiLangCompiler.dir/src/main.cpp.o	5a1fa6de76439745
 3	3995	1738279407529845292	CMakeFiles/SimiLangCompiler.dir/src/codegen/LLVMIRGenerator.cpp.o	889192ff3f20238d
 3995	4583	1738279411521910224	SimiLangCompiler	5b2281d55c1c68bf
+3	3751	1738279698343519398	CMakeFiles/SimiLangCompiler.dir/src/main.cpp.o	5a1fa6de76439745
+3	4127	1738279698343519398	CMakeFiles/SimiLangCompiler.dir/src/codegen/LLVMIRGenerator.cpp.o	889192ff3f20238d
+4127	4753	1738279702467585005	SimiLangCompiler	5b2281d55c1c68bf
