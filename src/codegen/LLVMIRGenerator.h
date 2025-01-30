@@ -14,6 +14,7 @@ class LLVMIRGenerator {
 public:
     LLVMIRGenerator();
     void generateIR(antlr4::tree::ParseTree* tree, LanguageParser& parser);
+    void runCode();  // Add this function
 
 private:
     std::unique_ptr<llvm::LLVMContext> context;

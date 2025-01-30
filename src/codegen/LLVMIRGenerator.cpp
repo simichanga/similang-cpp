@@ -2,6 +2,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/IR/Verifier.h>
 #include <fstream>
+#include <cstdlib>  // For system()
 
 LLVMIRGenerator::LLVMIRGenerator()
     : context(std::make_unique<llvm::LLVMContext>()),
@@ -35,6 +36,17 @@ void LLVMIRGenerator::generateIR(antlr4::tree::ParseTree* tree, LanguageParser& 
     } else {
         std::cerr << "Failed to open output.ll for writing: " << ec.message() << "\n";
     }
+}
+
+void LLVMIRGenerator::runCode() {
+    // Step 1: Compile the IR to an object file using llc
+    std::system("llc -filetype=obj output.ll -o output.o");
+
+    // Step 2: Link the object file into an executable using gcc
+    std::system("gcc output.o -o output");
+
+    // Step 3: Run the generated executable
+    std::system("./output");
 }
 
 llvm::Value* LLVMIRGenerator::visit(antlr4::tree::ParseTree* tree, LanguageParser& parser) {
