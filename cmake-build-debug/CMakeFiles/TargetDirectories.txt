@@ -1,0 +1,9 @@
+/home/garuda/Dev/similang-cpp/cmake-build-debug/CMakeFiles/intrinsics_gen.dir
+/home/garuda/Dev/similang-cpp/cmake-build-debug/CMakeFiles/omp_gen.dir
+/home/garuda/Dev/similang-cpp/cmake-build-debug/CMakeFiles/acc_gen.dir
+/home/garuda/Dev/similang-cpp/cmake-build-debug/CMakeFiles/ARMTargetParserTableGen.dir
+/home/garuda/Dev/similang-cpp/cmake-build-debug/CMakeFiles/AArch64TargetParserTableGen.dir
+/home/garuda/Dev/similang-cpp/cmake-build-debug/CMakeFiles/RISCVTargetParserTableGen.dir
+/home/garuda/Dev/similang-cpp/cmake-build-debug/CMakeFiles/SimiLangCompiler.dir
+/home/garuda/Dev/similang-cpp/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/garuda/Dev/similang-cpp/cmake-build-debug/CMakeFiles/rebuild_cache.dir

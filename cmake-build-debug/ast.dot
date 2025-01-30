@@ -1,0 +1,21 @@
+digraph G {
+  0 [label="program"];
+  1 [label="statement"];
+  0 -> 1;
+  2 [label="variableDeclaration"];
+  1 -> 2;
+  3 [label="let"];
+  2 -> 3;
+  4 [label="x"];
+  2 -> 4;
+  5 [label=":"];
+  2 -> 5;
+  6 [label="type"];
+  2 -> 6;
+  7 [label="int"];
+  6 -> 7;
+  8 [label=";"];
+  2 -> 8;
+  9 [label="<EOF>"];
+  0 -> 9;
+}
